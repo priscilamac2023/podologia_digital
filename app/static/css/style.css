@@ -1,0 +1,14 @@
+:root { --brand: #176b65; --brand-dark: #10534f; --page: #f5f8f7; }
+body { background: var(--page); color: #233331; }
+.app-navbar { background: var(--brand-dark); }
+.btn-primary { background: var(--brand); border-color: var(--brand); }
+.btn-primary:hover, .btn-primary:focus { background: var(--brand-dark); border-color: var(--brand-dark); }
+.card { border: 1px solid #e5ecea; border-radius:  .8rem; box-shadow: 0 .15rem .5rem rgba(20, 50, 45, .035); }
+.eyebrow { color: var(--brand); font-size: .75rem; font-weight: 700; letter-spacing: .12em; }
+.metric-card .card-body { display: grid; gap: .45rem; }
+.metric-card strong { font-size: 2rem; }
+.metric-card a, a { color: var(--brand); }
+.login-wrap { max-width: 460px; margin: min(12vh, 7rem) auto; }
+.form-card { max-width: 720px; }
+.table > :not(caption) > * > * { padding: .85rem 1rem; }
+@media (max-width: 575.98px) { main.container { padding-top: 1rem !important; } .table { font-size: .9rem; } }
