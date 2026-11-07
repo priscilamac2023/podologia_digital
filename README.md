@@ -58,3 +58,23 @@ Os testes usam banco SQLite em memória e cobrem autenticação, CRUD básico e 
 ## Histórico semântico e revisão
 
 Use commits curtos no formato Conventional Commits (por exemplo, `feat: adiciona validação de horários` ou `fix: bloqueia conflito de agendamento`). Pull requests devem explicar motivação, alterações e testes; manter escopo pequeno; incluir evidências de interface quando aplicável; e passar pela revisão de requisitos, segurança, legibilidade e testes antes do merge.
+
+Decisões técnicas e melhorias da revisão
+
+Durante a revisão técnica do MVP, foram considerados os seguintes aspectos:
+
+Arquitetura: separação entre modelos, rotas, serviços e formulários, facilitando a organização e a manutenção do código.
+
+Legibilidade: utilização de nomes descritivos para arquivos, funções e variáveis, além de commits com mensagens padronizadas.
+
+Segurança: armazenamento de senhas com hash, proteção CSRF nos formulários e utilização de variáveis de ambiente para configurações sensíveis.
+
+Integridade dos dados: validação dos campos e prevenção de agendamentos ativos no mesmo horário.
+
+Testabilidade: utilização de testes automatizados com banco de dados SQLite em memória para verificar as principais regras de negócio.
+
+Melhorias previstas
+
+Como evolução do projeto, poderão ser realizados aprimoramentos na interface, ampliação da cobertura de testes e melhorias na experiência de navegação, mantendo o foco na usabilidade, acessibilidade e segurança das informações dos clientes.
+
+As alterações serão registradas em commits e submetidas a Pull Requests para facilitar o acompanhamento e a revisão do desenvolvimento.
