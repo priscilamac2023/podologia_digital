@@ -1,9 +1,9 @@
 from datetime import datetime
+from urllib.parse import urlsplit
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
 
 from app import db
 from app.forms import AppointmentForm, ClientForm, LoginForm
@@ -15,6 +15,16 @@ auth_bp = Blueprint("auth", __name__)
 main_bp = Blueprint("main", __name__)
 
 
+def _safe_next_url(target):
+    """Aceita somente destinos locais para evitar redirecionamento externo no login."""
+    if not target:
+        return None
+    parsed = urlsplit(target)
+    if parsed.scheme or parsed.netloc or not target.startswith("/") or target.startswith("//"):
+        return None
+    return target
+
+
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -24,7 +34,7 @@ def login():
         user = User.query.filter_by(username=form.username.data.strip()).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(request.args.get("next") or url_for("main.index"))
+            return redirect(_safe_next_url(request.args.get("next")) or url_for("main.index"))
         flash("Usuário ou senha inválidos.", "danger")
     return render_template("login.html", form=form)
 
@@ -119,10 +129,7 @@ def new_appointment():
                              notes=form.notes.data or None)
             flash("Agendamento salvo com sucesso.", "success")
             return redirect(url_for("main.appointments"))
-        except AppointmentConflict as error:
-            db.session.rollback()
-            flash(str(error), "danger")
-        except ValueError as error:
+        except (AppointmentConflict, ValueError) as error:
             db.session.rollback()
             flash(str(error), "danger")
     return render_template("appointment_form.html", form=form, title="Novo agendamento")

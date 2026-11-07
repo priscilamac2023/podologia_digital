@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime
 
 from app import create_app, db
 from app.models import Appointment, Client, User
@@ -51,6 +52,15 @@ def test_dashboard_requires_login_and_loads_after_login(client):
     assert "Clientes cadastrados" in response.get_data(as_text=True)
 
 
+def test_login_rejects_external_next_redirect(client):
+    response = client.post(
+        "/login?next=https://example.com",
+        data={"username": "teste", "password": "senha-segura-123"},
+    )
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/")
+
+
 def test_client_crud_routes(client):
     login(client)
     response = client.post("/clientes", data={"name": "Ana Souza", "phone": "11988887777", "email": "ana@example.com", "submit": "Salvar cliente"}, follow_redirects=True)
@@ -61,7 +71,7 @@ def test_client_crud_routes(client):
 def test_appointment_conflict_and_cancelled_slot(app):
     with app.app_context():
         client = Client.query.filter_by(name="Maria Silva").first()
-        starts_at = __import__("datetime").datetime(2026, 12, 1, 10, 0)
+        starts_at = datetime(2026, 12, 1, 10, 0)
         first = save_appointment(Appointment(), client_id=client.id, starts_at=starts_at)
         with pytest.raises(AppointmentConflict):
             save_appointment(Appointment(), client_id=client.id, starts_at=starts_at)

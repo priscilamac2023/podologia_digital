@@ -1,11 +1,11 @@
 from flask_wtf import FlaskForm
-from wtforms import DateTimeLocalField, SelectField, StringField, SubmitField, TextAreaField
+from wtforms import DateTimeLocalField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length, Optional
 
 
 class LoginForm(FlaskForm):
     username = StringField("Usuário", validators=[DataRequired(), Length(max=80)])
-    password = StringField("Senha", validators=[DataRequired()])
+    password = PasswordField("Senha", validators=[DataRequired()])
     submit = SubmitField("Entrar")
 
 
