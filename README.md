@@ -34,7 +34,8 @@ python run.py
 
 O comando `create-user` solicita usuário e senha (mínimo de 8 caracteres). Não existe cadastro público de usuários. O banco SQLite e o diretório `instance/` são criados automaticamente. Acesse http://127.0.0.1:5000.
 
-Para apontar para outro banco, defina `DATABASE_URL`; para testes locais, por exemplo, `sqlite:///teste.db`.
+Para apontar para outro banco, defina `DATABASE_URL`; 
+Testes locais, por exemplo, `sqlite:///teste.db`.
 
 ## Testes
 
