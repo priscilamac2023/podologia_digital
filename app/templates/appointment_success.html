@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Agendamento registrado | Podologia Digital{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <h1>Agendamento registrado</h1>
+  <p>Confira os dados e acompanhe o status do atendimento.</p>
+</div>
+<section class="success-banner" role="status" aria-live="polite">
+  <span class="success-icon" aria-hidden="true">✓</span>
+  <div><h2>Agendamento salvo com sucesso</h2><p>O horário foi incluído na agenda. Confira abaixo os dados registrados.</p></div>
+</section>
+<div class="result-grid">
+  <section class="panel result-panel">
+    <h2>Detalhes do agendamento</h2>
+    <div class="result-details">
+      <div class="summary-item"><small>Cliente</small><strong>{{ appointment.client.name }}</strong></div>
+      <div class="summary-item"><small>Telefone</small><strong>{{ appointment.client.phone }}</strong></div>
+      <div class="summary-item"><small>Data</small><strong>{{ appointment.starts_at.strftime('%d/%m/%Y') }}</strong></div>
+      <div class="summary-item"><small>Horário</small><strong>{{ appointment.starts_at.strftime('%H:%M') }}</strong></div>
+    </div>
+    <span class="status-pill">{{ appointment.status|capitalize }}</span>
+  </section>
+  <section class="panel result-panel">
+    <h2>Próximas ações</h2>
+    <p class="text-secondary small mb-4">O que deseja fazer agora?</p>
+    <div class="result-actions">
+      <a class="btn btn-primary" href="{{ url_for('main.appointments') }}">Ver Agenda</a>
+      <a class="btn btn-primary" href="{{ url_for('main.new_appointment') }}">Novo cadastro</a>
+    </div>
+  </section>
+</div>
+<div class="notice-banner">
+  <span class="notice-icon" aria-hidden="true">i</span>
+  <div><h2>Organização da agenda</h2><p>Consulte a agenda para verificar os horários disponíveis e acompanhar eventuais cancelamentos.</p></div>
+</div>
+<p class="text-secondary small mt-4">Confira sempre os dados antes de finalizar o atendimento.</p>
+{% endblock %}
