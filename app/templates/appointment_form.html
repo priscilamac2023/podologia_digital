@@ -1,1 +1,59 @@
-{% extends 'base.html' %}{% block title %}{{ title }} | Podologia Digital{% endblock %}{% block content %}<div class="mb-4"><p class="eyebrow mb-1">AGENDA</p><h1 class="h2">{{ title }}</h1></div><section class="card form-card"><div class="card-body"><form method="post">{{ form.hidden_tag() }}{% for field in [form.client_id, form.starts_at, form.status, form.notes] %}<div class="mb-3">{{ field.label(class="form-label") }}{{ field(class="form-select") if field.name in ['client_id', 'status'] else field(class="form-control", rows=3) if field.name == 'notes' else field(class="form-control") }}{% for e in field.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>{% endfor %}<p class="form-text">Um horário já agendado não pode ser reservado novamente.</p>{{ form.submit(class="btn btn-primary") }} <a class="btn btn-outline-secondary" href="{{ url_for('main.appointments') }}">Cancelar</a></form></div></section>{% endblock %}
+{% extends 'base.html' %}
+{% block title %}{{ title }} | Podologia Digital{% endblock %}
+{% block content %}
+<div class="page-heading">
+  <h1>{{ title }}</h1>
+  <p>Preencha os dados para organizar o próximo atendimento.</p>
+  <div class="breadcrumb-line">Início&nbsp; / &nbsp;Agenda&nbsp; / &nbsp;{{ title }}</div>
+</div>
+<form method="post" class="form-layout">
+  {{ form.hidden_tag() }}
+  <section class="panel form-panel">
+    <h2 class="form-section-title">Dados do cliente</h2>
+    <p class="form-section-help">Selecione o cliente que será vinculado ao atendimento.</p>
+    <div class="mb-3">
+      {{ form.client_id.label(class="form-label") }}
+      {{ form.client_id(class="form-select", aria_describedby="clientHelp") }}
+      <div id="clientHelp" class="form-text">Para cadastrar uma nova pessoa, acesse a opção Clientes no menu.</div>
+      {% for e in form.client_id.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
+    <hr class="form-divider">
+    <h2 class="form-section-title">Detalhes do atendimento</h2>
+    <p class="form-section-help">Selecione a data e o horário desejados.</p>
+    <div class="form-grid">
+      <div>
+        {{ form.starts_at.label(class="form-label") }}
+        {{ form.starts_at(class="form-control", type="datetime-local") }}
+        {% for e in form.starts_at.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+      </div>
+      <div>
+        {{ form.status.label(class="form-label") }}
+        {{ form.status(class="form-select") }}
+        {% for e in form.status.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+      </div>
+    </div>
+    <div class="mt-3">
+      {{ form.notes.label(class="form-label") }}
+      {{ form.notes(class="form-control", rows="3", placeholder="Observações (opcional)") }}
+      {% for e in form.notes.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="availability-note mt-4" role="status"><strong aria-hidden="true">i</strong><span>O horário será verificado antes de salvar. Agendamentos ativos não podem ocupar o mesmo horário.</span></div>
+    <hr class="form-divider">
+    <p class="form-text small">Os campos identificados são obrigatórios, exceto quando indicado.</p>
+    {{ form.submit(class="btn btn-primary", value="Salvar agendamento") }}
+    <a class="btn btn-outline-secondary ms-2" href="{{ url_for('main.appointments') }}">Voltar para agenda</a>
+  </section>
+  <aside>
+    <section class="panel summary-card">
+      <h2>Resumo</h2>
+      <div class="summary-item"><small>Cliente</small><strong>Cliente selecionado no formulário</strong></div>
+      <div class="summary-item"><small>Data e horário</small><strong>Conforme preenchimento</strong></div>
+      <span class="status-pill">Pendente</span>
+    </section>
+    <section class="panel privacy-card">
+      <h3>Privacidade</h3>
+      <p>O acesso é restrito à profissional. Cadastre apenas os dados necessários para organizar o atendimento.</p>
+    </section>
+  </aside>
+</form>
+{% endblock %}
