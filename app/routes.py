@@ -127,8 +127,7 @@ def new_appointment():
             save_appointment(Appointment(), client_id=form.client_id.data,
                              starts_at=form.starts_at.data, status=form.status.data,
                              notes=form.notes.data or None)
-            flash("Agendamento salvo com sucesso.", "success")
-            return redirect(url_for("main.appointments"))
+            return redirect(url_for("main.appointment_success", appointment_id=appointment.id))
         except (AppointmentConflict, ValueError) as error:
             db.session.rollback()
             flash(str(error), "danger")
@@ -170,3 +169,10 @@ def delete_appointment(appointment_id):
     db.session.commit()
     flash("Agendamento excluído.", "success")
     return redirect(url_for("main.appointments"))
+
+
+@main_bp.get("/agendamentos/<int:appointment_id>/sucesso")
+@login_required
+def appointment_success(appointment_id):
+    appointment = db.get_or_404(Appointment, appointment_id)
+    return render_template("appointment_success.html", appointment=appointment)
