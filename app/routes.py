@@ -124,9 +124,13 @@ def new_appointment():
         return redirect(url_for("main.clients"))
     if form.validate_on_submit():
         try:
-            save_appointment(Appointment(), client_id=form.client_id.data,
-                             starts_at=form.starts_at.data, status=form.status.data,
-                             notes=form.notes.data or None)
+            appointment = save_appointment(
+                Appointment(),
+                client_id=form.client_id.data,
+                starts_at=form.starts_at.data,
+                status=form.status.data,
+                notes=form.notes.data or None,
+            )
             return redirect(url_for("main.appointment_success", appointment_id=appointment.id))
         except (AppointmentConflict, ValueError) as error:
             db.session.rollback()
