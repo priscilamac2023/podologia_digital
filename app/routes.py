@@ -1,12 +1,12 @@
 from datetime import datetime
 from urllib.parse import urlsplit
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy import select
 
 from app import db
-from app.forms import AppointmentForm, ClientForm, LoginForm
+from app.forms import AppointmentForm, ClientForm, LoginForm, RegisterForm
 from app.models import Appointment, Client, User
 from app.services import AppointmentConflict, save_appointment
 
@@ -37,6 +37,44 @@ def login():
             return redirect(_safe_next_url(request.args.get("next")) or url_for("main.index"))
         flash("Usuário ou senha inválidos.", "danger")
     return render_template("login.html", form=form)
+
+@auth_bp.route("/cadastro", methods=["GET", "POST"])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.index"))
+
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        invite_code = current_app.config.get("INVITE_CODE", "")
+
+        if not invite_code or form.invite_code.data != invite_code:
+            flash("Código de convite inválido.", "danger")
+            return render_template("register.html", form=form)
+
+        username = form.username.data.strip()
+
+        if User.query.filter_by(username=username).first():
+            flash("Esse nome de usuário já está cadastrado.", "danger")
+            return render_template("register.html", form=form)
+
+        if form.password.data != form.confirm_password.data:
+            flash("As senhas não coincidem.", "danger")
+            return render_template("register.html", form=form)
+
+        user = User(
+            full_name=form.full_name.data.strip(),
+            username=username,
+        )
+        user.set_password(form.password.data)
+
+        db.session.add(user)
+        db.session.commit()
+
+        flash("Cadastro realizado com sucesso! Entre com seu usuário e senha.", "success")
+        return redirect(url_for("auth.login"))
+
+    return render_template("register.html", form=form)
 
 
 @auth_bp.post("/logout")

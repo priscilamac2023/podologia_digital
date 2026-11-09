@@ -8,6 +8,7 @@ from app import db
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(120), nullable=True)
     username = db.Column(db.String(80), unique=True, nullable=False, index=True)
     password_hash = db.Column(db.String(256), nullable=False)
 

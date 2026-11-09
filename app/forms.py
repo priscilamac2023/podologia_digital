@@ -29,3 +29,26 @@ class AppointmentForm(FlaskForm):
     )
     notes = TextAreaField("Observações", validators=[Optional(), Length(max=2000)])
     submit = SubmitField("Salvar agendamento")
+
+    class RegisterForm(FlaskForm):
+        full_name = StringField(
+        "Nome completo",
+        validators=[DataRequired(), Length(max=120)]
+    )
+    username = StringField(
+        "Usuário ou e-mail",
+        validators=[DataRequired(), Length(max=80)]
+    )
+    password = PasswordField(
+        "Senha",
+        validators=[DataRequired(), Length(min=8, message="A senha deve ter pelo menos 8 caracteres.")]
+    )
+    confirm_password = PasswordField(
+        "Confirmar senha",
+        validators=[DataRequired()]
+    )
+    invite_code = StringField(
+        "Código de convite",
+        validators=[DataRequired(), Length(max=100)]
+    )
+    submit = SubmitField("Criar minha conta")
