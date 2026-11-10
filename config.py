@@ -24,3 +24,4 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = True
+    INVITE_CODE = os.environ.get("INVITE_CODE", "")

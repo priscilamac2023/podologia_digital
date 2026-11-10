@@ -15,10 +15,9 @@
     <div class="result-details">
       <div class="summary-item"><small>Cliente</small><strong>{{ appointment.client.name }}</strong></div>
       <div class="summary-item"><small>Telefone</small><strong>{{ appointment.client.phone }}</strong></div>
-      <div class="summary-item"><small>Data</small><strong>{{ appointment.starts_at.strftime('%d/%m/%Y') }}</strong></div>
-      <div class="summary-item"><small>Horário</small><strong>{{ appointment.starts_at.strftime('%H:%M') }}</strong></div>
-    </div>
-    <span class="status-pill">{{ appointment.status|capitalize }}</span>
+     <div class="summary-item"><small>Data e horário</small><strong>{{ appointment.starts_at.strftime('%d/%m/%Y %H:%M') }}</strong>
+        </div>
+        <span class="status-pill">{{ appointment.status|capitalize }}</span>
   </section>
   <section class="panel result-panel">
     <h2>Próximas ações</h2>
