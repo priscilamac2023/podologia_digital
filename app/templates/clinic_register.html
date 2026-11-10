@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastrar clínica | Podologia Digital{% endblock %}
+
+{% block content %}
+<div class="login-wrap">
+    <section class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+            <p class="eyebrow">NOVO CADASTRO</p>
+
+            <h1 class="h3 mb-2">Cadastrar minha clínica</h1>
+
+            <p class="text-secondary mb-4">
+                Crie o espaço da sua clínica e convide seus funcionários.
+            </p>
+
+            <form method="post">
+                {{ form.hidden_tag() }}
+
+                {% for field in [
+                    form.clinic_name,
+                    form.full_name,
+                    form.username,
+                    form.password,
+                    form.confirm_password
+                ] %}
+                    <div class="mb-3">
+                        {{ field.label(class="form-label") }}
+                        {% if field.name in ['password', 'confirm_password'] %}
+                            {{ field(class="form-control", type="password", autocomplete="new-password") }}
+                        {% else %}
+                            {{ field(class="form-control") }}
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                {{ form.submit(class="btn btn-primary w-100") }}
+            </form>
+
+            <p class="text-center mt-3 mb-0">
+                Já tem uma conta?
+                <a href="{{ url_for('auth.login') }}">Entrar</a>
+            </p>
+        </div>
+    </section>
+</div>
+{% endblock %}

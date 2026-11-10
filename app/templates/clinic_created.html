@@ -1,0 +1,38 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Clínica cadastrada | Podologia Digital{% endblock %}
+
+{% block content %}
+<div class="login-wrap">
+    <section class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+            <p class="eyebrow">CADASTRO CONCLUÍDO</p>
+
+            <h1 class="h3 mb-2">Clínica cadastrada!</h1>
+
+            <p class="text-secondary">
+                A clínica <strong>{{ clinic.name }}</strong> foi criada.
+                Os funcionários poderão usar o código abaixo para criar
+                suas próprias contas e compartilhar os dados desta clínica.
+            </p>
+
+            <div class="alert alert-info mt-4">
+                <strong>Código de convite da clínica:</strong>
+                <p class="fs-5 mt-2 mb-0 text-break">{{ invite_code }}</p>
+            </div>
+
+            <p class="small text-secondary">
+                Guarde este código em local seguro e compartilhe somente
+                com os funcionários da sua clínica. Ele será exibido
+                apenas nesta confirmação.
+            </p>
+
+            <a href="{{ url_for('auth.login') }}"
+               class="btn btn-primary w-100 mt-3">
+                Ir para o login
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -7,3 +7,4 @@ venv/
 instance/*.db
 .coverage
 backups/
+app/routes_antes_multiclinica.py
